@@ -23,21 +23,19 @@ String finalString = String(100);
 
 // Color Definitions
 String colorNames[] = {"white", "red", "yellow", "green", "aqua", "blue", "purple", "csh"};
-String colorValues[] = {"FFFFFF", "FF0000", "FFFF00", "00FF00", "00FFFF", "0000FF", "800080", "C1007C"};
+String colorValues[] = {"0xFFFFFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0x800080", "0xC1007C"};
 // Color Definitions
 
-String parseColorName(String color){
-  color.toLowerCase();
-
+int indexOf(String array[], String pattern){
+  for (int i = 0; i < 8; i++) {
+    if (array[i].equals(pattern)) {
+      return i;
+    }
+  }
+  return -1;
 }
 
-void setColor(uint8_t red, uint8_t green, uint8_t blue){
-  analogWrite(REDPIN, red);
-  analogWrite(GREENPIN, green);
-  analogWrite(BLUEPIN, blue);
-}
-
-void setColor(String hexColor){
+String setColor(String hexColor){
     hexColor.toUpperCase();
     String tempColor = hexColor.substring(2);
     Serial.println(tempColor);
@@ -49,15 +47,28 @@ void setColor(String hexColor){
     analogWrite(REDPIN, r);
     analogWrite(GREENPIN, g);
     analogWrite(BLUEPIN, b);
+
+    currentColor = hexColor;
+    return tempColor;
+}
+
+String parseColor(String color){
+  color.toLowerCase();
+  if (color.substring(0, 2).equals("0x")) {
+    return setColor(color);
+  }else if(indexOf(colorNames, color) != -1){
+    return setColor(colorValues[indexOf(colorNames, color)]);
+  }else return "None";
 }
 
 String parseRequest(String request){
   String type = request.substring(0, request.indexOf(' '));
   String color = "";
+  Serial.println(type);
   if (type == "POST") {
     int pos = request.indexOf('/');
     Serial.println(color = request.substring(pos+1, request.indexOf(' ', pos)));
-    setColor(color);
+    parseColor(color);
     return color;
   }else if (type == "GET"){
     return currentColor;
@@ -80,6 +91,7 @@ void setup(){
 
   Serial.print("Server is at: ");
   Serial.println(Ethernet.localIP());
+
 }
 
 
@@ -100,7 +112,7 @@ void loop(){
         }
         if (c == '\n' && currentLineIsBlank) {
           finalString = readString.substring(0, readString.indexOf('\n'));
-          currentColor = parseRequest(finalString);
+          parseRequest(finalString);
           Serial.println(finalString);
           client.println("Color set to: " + currentColor);
           break;
