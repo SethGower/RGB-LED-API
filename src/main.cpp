@@ -1,3 +1,10 @@
+/*
+An Arduino sketch that receives POST requests to change the color of an LED strip.
+
+Author: Seth Gower
+sethgower.com
+*/
+
 #include <Arduino.h>
 #include <Ethernet.h>
 
@@ -5,16 +12,18 @@
 #define GREENPIN 5
 #define BLUEPIN 6
 
-byte mac[] = {0x56, 0xA9, 0x71, 0x00, 0x18, 0x4E};
-byte ip[] = {129, 21, 50, 27};
+//defines the internet interface properties
+byte mac[] = {0x56, 0xA9, 0x71, 0x00, 0x18, 0x4E}; //MAC address
+byte ip[] = {129, 21, 50, 27}; //IPv4 address.
 byte gateway[] = {129,21,76,254};
 byte subnet[] = {255,255,255,0};
 
-String default_color = "0xC1007C";
+String default_color = "0xC1007C"; //the CSH pink
 String currentColor = default_color;
 
-EthernetServer server = EthernetServer(80);
+EthernetServer server = EthernetServer(80); //opens a server on port 80, the default HTTP port
 
+//Strings used when reading the HTTP request
 String readString = String(100);
 String finalString = String(100);
 
@@ -23,6 +32,9 @@ String colorNames[] = {"white", "red", "yellow", "green", "aqua", "blue", "purpl
 String colorValues[] = {"0xFFFFFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0x800080", "0xC1007C"};
 // Color Definitions
 
+/*
+A method that returns the index of a String in a String array. If it isn't present, then it returns -1
+*/
 int indexOf(String array[], String pattern){
   for (int i = 0; i < 8; i++) {
     if (array[i].equals(pattern)) {
@@ -32,6 +44,7 @@ int indexOf(String array[], String pattern){
   return -1;
 }
 
+//Set the color of the strip to a certain hex color
 String setColor(String hexColor){
     hexColor.toUpperCase();
     String tempColor = hexColor.substring(2);
@@ -49,6 +62,7 @@ String setColor(String hexColor){
     return tempColor;
 }
 
+//determines if the color which is passed from parseRequest() is a hex or a word
 String parseColor(String color){
   color.toLowerCase();
   if (color.substring(0, 2).equals("0x")) {
@@ -61,6 +75,7 @@ String parseColor(String color){
   }
 }
 
+//Parses the HTTP request embedded in the string passed to the method. The format is [POST,GET] /[color] HTTP/1.1
 String parseRequest(String request){
   String type = request.substring(0, request.indexOf(' '));
   String color = "";
@@ -110,6 +125,7 @@ void loop(){
         if (readString.length() < 100) {
           readString += c;
         }
+        //if there isn't more info being transmitted from the client
         if (c == '\n' && currentLineIsBlank) {
           finalString = readString.substring(0, readString.indexOf('\n'));
           parseRequest(finalString);
