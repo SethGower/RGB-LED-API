@@ -23,4 +23,4 @@ Name     | Hex Value
 
 I based the wiring of the Arduino on a design on [Adafruit](https://adafruit.com). For the Red, Green and Blue wires, I used pins 3, 5 and 6 respectively on (these are all PWM pins).
 
-<a href="https://learn.adafruit.com/rgb-led-strips/usage"><img src="https://cdn-learn.adafruit.com/assets/assets/000/002/692/original/led_strips_ledstripfet.gif?1448059609"></a>
+<a href="https://learn.adafruit.com/rgb-led-strips/usage" target="_blank"><img src="https://cdn-learn.adafruit.com/assets/assets/000/002/692/original/led_strips_ledstripfet.gif?1448059609"></a>
