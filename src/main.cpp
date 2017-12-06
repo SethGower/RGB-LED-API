@@ -48,7 +48,8 @@ int indexOf(String array[], String pattern){
 String setColor(String hexColor){
     hexColor.toUpperCase();
     String tempColor = hexColor.substring(2);
-    Serial.println(tempColor);
+    tempColor.toUpperCase();
+    Serial.println("Tempcolor:" + tempColor);
     long number = (long) strtol( &tempColor[0], NULL, 16);
     int r = number >> 16;
     int g = number >> 8 & 0xFF;
@@ -66,7 +67,9 @@ String setColor(String hexColor){
 String parseColor(String color){
   color.toLowerCase();
   if (color.substring(0, 2).equals("0x")) {
-    return setColor(color);
+    Serial.println(color);
+    color.toUpperCase();
+    return color;
   }else if(indexOf(colorNames, color) != -1){
     return colorValues[indexOf(colorNames, color)];
   }else{
@@ -83,7 +86,7 @@ String parseRequest(String request){
   if (type == "POST") {
     int pos = request.indexOf('/');
     Serial.println(color = request.substring(pos+1, request.indexOf(' ', pos)));
-    setColor(parseColor(color));
+    Serial.println(setColor(parseColor(color)));
     return color;
   }else if (type == "GET"){
     return currentColor;
