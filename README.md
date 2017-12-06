@@ -8,6 +8,8 @@ Can currently only handle `POST` requests that are sent via `curl -X POST {locat
 
 This program can only handle _static_ changes to the LEDs. IE it cannot create fading effects for the LED strip. This is due to the Arduino's inability to multi-thread. I am working on another program, using a [Particle Photon](https://store.particle.io/products/photon) for the driver and a server backend that will handle all commands, and solely send brightness values to the Photon.
 
+This program is intended for Arduino, but it is written in C++ because I used [Platformio](http://platformio.org/) for development. If you would like to compile the program, you can just copy all of the code (exclude the `#include <Arduino.h>`) and paste it into the Arduino IDE or simply open this repo in Platformio by cloning it. 
+
 Name     | Hex Value
 :------- | :---------
 `white`  | `0xFFFFFF`
