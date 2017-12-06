@@ -10,6 +10,8 @@ byte ip[] = {129, 21, 50, 27};
 byte gateway[] = {129,21,76,254};
 byte subnet[] = {255,255,255,0};
 
+String currentColor = "";
+String default_color = "C1007C";
 
 EthernetServer server = EthernetServer(80);
 
@@ -38,6 +40,18 @@ void setColor(String hexColor){
     analogWrite(BLUEPIN, b);
 }
 
+String parseRequest(String request){
+  String type = request.substring(0, request.indexOf(' '));
+  String color = "";
+  if (type == "POST") {
+    int pos = request.indexOf('x');
+    color = request.substring(pos+1, pos+7);
+    setColor(color);
+    return color;
+  }else if (type == "GET"){
+    return currentColor;
+  }
+}
 void setup(){
   // initialize the ethernet device
   Ethernet.begin(mac, ip, gateway, subnet);
@@ -51,11 +65,12 @@ void setup(){
   pinMode(GREENPIN, OUTPUT);
   pinMode(BLUEPIN, OUTPUT);
 
-  setColor(0, 0, 0);
+  setColor(default_color);
 
   Serial.print("Server is at: ");
   Serial.println(Ethernet.localIP());
 }
+
 
 void loop(){
   // listen for incoming clients
@@ -63,26 +78,20 @@ void loop(){
   if (client) {
     Serial.println("new client");
     readString = "";
+    finalString = "";
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
     while (client.connected()) {
       if (client.available()) {
         char c = client.read();
-        if (readString.length() < 99) {
+        if (readString.length() < 100) {
           readString += c;
         }
         if (c == '\n' && currentLineIsBlank) {
-          String color = "";
-          Serial.println(readString);
-          Serial.println(readString.indexOf('x'));
-          int pos = readString.indexOf('x');
-          color = readString.substring(pos+1, pos+7);
-          Serial.println(color);
-
-
-          setColor(color);
-
-          client.println("Color set to: " + color);
+          finalString = readString.substring(0, readString.indexOf('\n'));
+          currentColor = parseRequest(finalString);
+          Serial.println(finalString);
+          client.println("Color set to: " + currentColor);
           break;
         }
         if (c == '\n') {
