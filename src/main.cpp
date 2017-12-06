@@ -10,8 +10,9 @@ byte ip[] = {129, 21, 50, 27};
 byte gateway[] = {129,21,76,254};
 byte subnet[] = {255,255,255,0};
 
+//String colors[] =
 String currentColor = "";
-String default_color = "C1007C";
+String default_color = "0xC1007C";
 
 EthernetServer server = EthernetServer(80);
 
@@ -20,7 +21,15 @@ String readString = String(100);
 String testString = String(100);
 String finalString = String(100);
 
-String flag = String(2);
+// Color Definitions
+String colorNames[] = {"white", "red", "yellow", "green", "aqua", "blue", "purple", "csh"};
+String colorValues[] = {"FFFFFF", "FF0000", "FFFF00", "00FF00", "00FFFF", "0000FF", "800080", "C1007C"};
+// Color Definitions
+
+String parseColorName(String color){
+  color.toLowerCase();
+
+}
 
 void setColor(uint8_t red, uint8_t green, uint8_t blue){
   analogWrite(REDPIN, red);
@@ -30,7 +39,9 @@ void setColor(uint8_t red, uint8_t green, uint8_t blue){
 
 void setColor(String hexColor){
     hexColor.toUpperCase();
-    long number = (long) strtol( &hexColor[0], NULL, 16);
+    String tempColor = hexColor.substring(2);
+    Serial.println(tempColor);
+    long number = (long) strtol( &tempColor[0], NULL, 16);
     int r = number >> 16;
     int g = number >> 8 & 0xFF;
     int b = number & 0xFF;
@@ -44,8 +55,8 @@ String parseRequest(String request){
   String type = request.substring(0, request.indexOf(' '));
   String color = "";
   if (type == "POST") {
-    int pos = request.indexOf('x');
-    color = request.substring(pos+1, pos+7);
+    int pos = request.indexOf('/');
+    Serial.println(color = request.substring(pos+1, request.indexOf(' ', pos)));
     setColor(color);
     return color;
   }else if (type == "GET"){
