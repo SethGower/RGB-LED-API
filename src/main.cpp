@@ -10,15 +10,12 @@ byte ip[] = {129, 21, 50, 27};
 byte gateway[] = {129,21,76,254};
 byte subnet[] = {255,255,255,0};
 
-//String colors[] =
-String currentColor = "";
 String default_color = "0xC1007C";
+String currentColor = default_color;
 
 EthernetServer server = EthernetServer(80);
 
 String readString = String(100);
-
-String testString = String(100);
 String finalString = String(100);
 
 // Color Definitions
@@ -57,8 +54,11 @@ String parseColor(String color){
   if (color.substring(0, 2).equals("0x")) {
     return setColor(color);
   }else if(indexOf(colorNames, color) != -1){
-    return setColor(colorValues[indexOf(colorNames, color)]);
-  }else return "None";
+    return colorValues[indexOf(colorNames, color)];
+  }else{
+    Serial.println("No such color. Reverting to default");
+    return default_color;
+  }
 }
 
 String parseRequest(String request){
@@ -68,7 +68,7 @@ String parseRequest(String request){
   if (type == "POST") {
     int pos = request.indexOf('/');
     Serial.println(color = request.substring(pos+1, request.indexOf(' ', pos)));
-    parseColor(color);
+    setColor(parseColor(color));
     return color;
   }else if (type == "GET"){
     return currentColor;
