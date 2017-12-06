@@ -28,8 +28,8 @@ String readString = String(100);
 String finalString = String(100);
 
 // Color Definitions
-String colorNames[] = {"white", "red", "yellow", "green", "aqua", "blue", "purple", "pink", "csh"};
-String colorValues[] = {"0xFFFFFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0x800080", "0xFF69B4", "0xC1007C"};
+String colorNames[] = {"white", "red", "yellow", "green", "aqua", "blue", "purple", "pink", "csh", "off"};
+String colorValues[] = {"0xFFFFFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0x800080", "0xFF69B4", "0xC1007C", "0x000000"};
 // Color Definitions
 
 /*

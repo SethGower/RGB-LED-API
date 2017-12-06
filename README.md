@@ -8,7 +8,7 @@ Can currently only handle `POST` requests that are sent via `curl -X POST {locat
 
 This program can only handle _static_ changes to the LEDs. IE it cannot create fading effects for the LED strip. This is due to the Arduino's inability to multi-thread. I am working on another program, using a [Particle Photon](https://store.particle.io/products/photon) for the driver and a server backend that will handle all commands, and solely send brightness values to the Photon.
 
-This program is intended for Arduino, but it is written in C++ because I used [Platformio](http://platformio.org/) for development. If you would like to compile the program, you can just copy all of the code (exclude the `#include <Arduino.h>`) and paste it into the Arduino IDE or simply open this repo in Platformio by cloning it. 
+This program is intended for Arduino, but it is written in C++ because I used [Platformio](http://platformio.org/) for development. If you would like to compile the program, you can just copy all of the code (exclude the `#include <Arduino.h>`) and paste it into the Arduino IDE or simply open this repo in Platformio by cloning it.
 
 Name     | Hex Value
 :------- | :---------
@@ -20,9 +20,10 @@ Name     | Hex Value
 `blue`   | `0x0000FF`
 `purple` | `0x800080`
 `csh`    | `0xC1007C`
+`off`    | `0x000000`
 
 ## Wiring
 
 I based the wiring of the Arduino on a design on [Adafruit](https://adafruit.com). For the Red, Green and Blue wires, I used pins 3, 5 and 6 respectively on (these are all PWM pins).
 
-<a href="https://learn.adafruit.com/rgb-led-strips/usage" target="_blank"><img src="https://cdn-learn.adafruit.com/assets/assets/000/002/692/original/led_strips_ledstripfet.gif?1448059609"></a>
+[![](https://cdn-learn.adafruit.com/assets/assets/000/002/692/original/led_strips_ledstripfet.gif?1448059609)](https://learn.adafruit.com/rgb-led-strips/usage)
