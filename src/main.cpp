@@ -27,23 +27,6 @@ EthernetServer server = EthernetServer(80); //opens a server on port 80, the def
 String readString = String(100);
 String finalString = String(100);
 
-// Color Definitions
-String colorNames[] = {"white", "red", "yellow", "green", "aqua", "blue", "purple", "csh"};
-String colorValues[] = {"0xFFFFFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFFF", "0x0000FF", "0x800080", "0xC1007C"};
-// Color Definitions
-
-/*
-A method that returns the index of a String in a String array. If it isn't present, then it returns -1
-*/
-int indexOf(String array[], String pattern){
-  for (int i = 0; i < 8; i++) {
-    if (array[i].equals(pattern)) {
-      return i;
-    }
-  }
-  return -1;
-}
-
 //Set the color of the strip to a certain hex color
 String setColor(String hexColor){
     hexColor.toUpperCase();
@@ -62,19 +45,6 @@ String setColor(String hexColor){
     return tempColor;
 }
 
-//determines if the color which is passed from parseRequest() is a hex or a word
-String parseColor(String color){
-  color.toLowerCase();
-  if (color.substring(0, 2).equals("0x")) {
-    return setColor(color);
-  }else if(indexOf(colorNames, color) != -1){
-    return colorValues[indexOf(colorNames, color)];
-  }else{
-    Serial.println("No such color. Reverting to default");
-    return default_color;
-  }
-}
-
 //Parses the HTTP request embedded in the string passed to the method. The format is [POST,GET] /[color] HTTP/1.1
 String parseRequest(String request){
   String type = request.substring(0, request.indexOf(' '));
@@ -83,10 +53,8 @@ String parseRequest(String request){
   if (type == "POST") {
     int pos = request.indexOf('/');
     Serial.println(color = request.substring(pos+1, request.indexOf(' ', pos)));
-    setColor(parseColor(color));
+    setColor(color);
     return color;
-  }else if (type == "GET"){
-    return currentColor;
   }
 }
 
