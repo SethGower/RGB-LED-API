@@ -74,6 +74,7 @@ String parseRequest(String request){
     return currentColor;
   }
 }
+
 void setup(){
   // initialize the ethernet device
   Ethernet.begin(mac, ip, gateway, subnet);
@@ -93,7 +94,6 @@ void setup(){
   Serial.println(Ethernet.localIP());
 
 }
-
 
 void loop(){
   // listen for incoming clients
