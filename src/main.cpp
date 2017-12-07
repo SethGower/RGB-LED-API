@@ -36,7 +36,7 @@ String colorValues[] = {"0xFFFFFF", "0xFF0000", "0xFFFF00", "0x00FF00", "0x00FFF
 A method that returns the index of a String in a String array. If it isn't present, then it returns -1
 */
 int indexOf(String array[], String pattern){
-  for (int i = 0; i < 8; i++) {
+  for (int i = 0; i < 9; i++) {
     if (array[i].equals(pattern)) {
       return i;
     }
@@ -102,6 +102,7 @@ void setup(){
 
   Serial.begin(19200);
 
+
   pinMode(REDPIN, OUTPUT);
   pinMode(GREENPIN, OUTPUT);
   pinMode(BLUEPIN, OUTPUT);
@@ -133,7 +134,8 @@ void loop(){
           finalString = readString.substring(0, readString.indexOf('\n'));
           parseRequest(finalString);
           Serial.println(finalString);
-          client.println("Color set to: " + currentColor);
+          client.println(201);
+          client.println("200 Color set to: " + currentColor);
           break;
         }
         if (c == '\n') {
